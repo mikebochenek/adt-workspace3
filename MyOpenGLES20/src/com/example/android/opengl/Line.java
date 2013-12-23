@@ -14,16 +14,11 @@ public class Line {
 
 	private FloatBuffer VertexBuffer;
 
-	private final String VertexShaderCode =
-	// This matrix member variable provides a hook to manipulate
-	// the coordinates of the objects that use this vertex shader
-	"uniform mat4 uMVPMatrix;" +
+	private final String vShaderCode = "uniform mat4 uMVPMatrix;"
+			+ "attribute vec4 vPosition;" + "void main() {"
+			+ "  gl_Position = uMVPMatrix * vPosition;" + "}";
 
-	"attribute vec4 vPosition;" + "void main() {" +
-	// the matrix must be included as a modifier of gl_Position
-			"  gl_Position = uMVPMatrix * vPosition;" + "}";
-
-	private final String FragmentShaderCode = "precision mediump float;"
+	private final String fShaderCode = "precision mediump float;"
 			+ "uniform vec4 vColor;" + "void main() {"
 			+ "  gl_FragColor = vColor;" + "}";
 
@@ -41,58 +36,24 @@ public class Line {
 															// vertex
 
 	// Set color with red, green, blue and alpha (opacity) values
-	float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	float color[] = { 0.0f, 1.0f, 0.0f, 1.0f };
 
 	public Line() {
-		// initialize vertex byte buffer for shape coordinates
-		ByteBuffer bb = ByteBuffer.allocateDirect(
-		// (number of coordinate values * 4 bytes per float)
-				LineCoords.length * 4);
-		// use the device hardware's native byte order
-		bb.order(ByteOrder.nativeOrder());
+		ByteBuffer bb = ByteBuffer.allocateDirect(LineCoords.length * 4);
+		bb.order(ByteOrder.nativeOrder()); // use the device hardware's native byte order
+		VertexBuffer = bb.asFloatBuffer(); // create a floating point buffer from the ByteBuffer
+		
+		VertexBuffer.put(LineCoords); // add the coordinates to the FloatBuffer
+		VertexBuffer.position(0); // set the buffer to read the first coordinate
 
-		// create a floating point buffer from the ByteBuffer
-		VertexBuffer = bb.asFloatBuffer();
-		// add the coordinates to the FloatBuffer
-		VertexBuffer.put(LineCoords);
-		// set the buffer to read the first coordinate
-		VertexBuffer.position(0);
-
-		int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER,
-				VertexShaderCode);
-		int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER,
-				FragmentShaderCode);
+		int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vShaderCode);
+		int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fShaderCode);
 
 		GlProgram = GLES20.glCreateProgram(); // create empty OpenGL ES Program
-		GLES20.glAttachShader(GlProgram, vertexShader); // add the vertex shader
-														// to program
-		GLES20.glAttachShader(GlProgram, fragmentShader); // add the fragment
-															// shader to program
-		GLES20.glLinkProgram(GlProgram); // creates OpenGL ES program
-											// executables
+		GLES20.glAttachShader(GlProgram, vertexShader); // add the vertex shader to program
+		GLES20.glAttachShader(GlProgram, fragmentShader); // add the fragment shader to program
+		GLES20.glLinkProgram(GlProgram); // creates OpenGL ES program  executables
 
-	}
-
-	public void SetVerts(float v0, float v1, float v2, float v3, float v4,
-			float v5) {
-		LineCoords[0] = v0;
-		LineCoords[1] = v1;
-		LineCoords[2] = v2;
-		LineCoords[3] = v3;
-		LineCoords[4] = v4;
-		LineCoords[5] = v5;
-
-		VertexBuffer.put(LineCoords);
-		// set the buffer to read the first coordinate
-		VertexBuffer.position(0);
-
-	}
-
-	public void SetColor(float red, float green, float blue, float alpha) {
-		color[0] = red;
-		color[1] = green;
-		color[2] = blue;
-		color[3] = alpha;
 	}
 
 	public void draw(float[] mvpMatrix) {
