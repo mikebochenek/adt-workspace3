@@ -29,8 +29,8 @@ public class Line {
 
 	// number of coordinates per vertex in this array
 	static final int COORDS_PER_VERTEX = 3;
-	static float LineCoords[] = { 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
-		0.0f, 0.2f, 0.0f, 0.5f, 0.2f, 0.0f };
+	private float LineCoords[] = { 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
+		0.0f, 0.1f, 0.0f, 0.5f, 0.1f, 0.0f };
 
 	private final int VertexCount = LineCoords.length / COORDS_PER_VERTEX;
 	private final int VertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per
@@ -58,24 +58,13 @@ public class Line {
 	}
 
 	public void draw(float[] mvpMatrix) {
-		// Add program to OpenGL ES environment
-		GLES20.glUseProgram(GlProgram);
-
-		// get handle to vertex shader's vPosition member
-		PositionHandle = GLES20.glGetAttribLocation(GlProgram, "vPosition");
-
-		// Enable a handle to the triangle vertices
-		GLES20.glEnableVertexAttribArray(PositionHandle);
-
-		// Prepare the triangle coordinate data
+		GLES20.glUseProgram(GlProgram); // Add program to OpenGL ES environment
+		PositionHandle = GLES20.glGetAttribLocation(GlProgram, "vPosition"); // get handle to vertex shader's vPosition member
+		GLES20.glEnableVertexAttribArray(PositionHandle); // Enable a handle to the triangle vertices
 		GLES20.glVertexAttribPointer(PositionHandle, COORDS_PER_VERTEX,
-				GLES20.GL_FLOAT, false, VertexStride, VertexBuffer);
-
-		// get handle to fragment shader's vColor member
-		ColorHandle = GLES20.glGetUniformLocation(GlProgram, "vColor");
-
-		// Set color for drawing the triangle
-		GLES20.glUniform4fv(ColorHandle, 1, color, 0);
+				GLES20.GL_FLOAT, false, VertexStride, VertexBuffer); // Prepare the triangle coordinate data
+		ColorHandle = GLES20.glGetUniformLocation(GlProgram, "vColor"); // get handle to fragment shader's vColor member
+		GLES20.glUniform4fv(ColorHandle, 1, color, 0); // Set color for drawing the line
 
 		// get handle to shape's transformation matrix
 		MVPMatrixHandle = GLES20.glGetUniformLocation(GlProgram, "uMVPMatrix");
@@ -85,10 +74,8 @@ public class Line {
 		GLES20.glUniformMatrix4fv(MVPMatrixHandle, 1, false, mvpMatrix, 0);
 		MyGLRenderer.checkGlError("glUniformMatrix4fv");
 
-		// Draw the triangle
-		GLES20.glDrawArrays(GLES20.GL_LINES, 0, VertexCount);
-
-		// Disable vertex array
-		GLES20.glDisableVertexAttribArray(PositionHandle);
+		
+		GLES20.glDrawArrays(GLES20.GL_LINES, 0, VertexCount); // Draw 
+		GLES20.glDisableVertexAttribArray(PositionHandle); // Disable vertex 
 	}
 }
