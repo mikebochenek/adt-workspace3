@@ -29,7 +29,8 @@ public class Line {
 
 	// number of coordinates per vertex in this array
 	static final int COORDS_PER_VERTEX = 3;
-	static float LineCoords[] = { 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f };
+	static float LineCoords[] = { 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
+		0.0f, 0.2f, 0.0f, 0.5f, 0.2f, 0.0f };
 
 	private final int VertexCount = LineCoords.length / COORDS_PER_VERTEX;
 	private final int VertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per
