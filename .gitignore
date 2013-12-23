@@ -1,0 +1,5 @@
+
+*.class
+.metadata/*
+./MyOpenGLES20/bin/*
+./TouchMemory/bin/*
