@@ -3,13 +3,11 @@ package com.example.android.opengl;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.opengl.GLES20;
 
-/**
- * total cut and paste from:  
- * http://stackoverflow.com/questions/16027455/what-is-the-easiest-way-to-draw-line-using-opengl-es-android
- */
 public class Line {
 
 	private FloatBuffer VertexBuffer;
@@ -29,8 +27,7 @@ public class Line {
 
 	// number of coordinates per vertex in this array
 	static final int COORDS_PER_VERTEX = 3;
-	private float LineCoords[] = { 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
-		0.0f, 0.1f, 0.0f, 0.5f, 0.1f, 0.0f };
+	private float LineCoords[] = initCoords();
 
 	private final int VertexCount = LineCoords.length / COORDS_PER_VERTEX;
 	private final int VertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per
@@ -78,4 +75,26 @@ public class Line {
 		GLES20.glDrawArrays(GLES20.GL_LINES, 0, VertexCount); // Draw 
 		GLES20.glDisableVertexAttribArray(PositionHandle); // Disable vertex 
 	}
+	
+	public static float[] initCoords() {
+		ArrayList<Float> list = new ArrayList<Float>();
+		
+		for (int i = 0; i < 10; i++) {
+			list.add(0.1f * i);
+			list.add(0.0f);
+			list.add(0.0f);
+		}
+/*
+		float x[] = new float[list.size()];
+		int idx = 0;
+		for (Float f : list) {
+			x[idx++] = f;
+		}
+*/
+		float x[] = { 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
+			0.0f, 0.1f, 0.0f, 0.5f, 0.1f, 0.0f };
+		return x;
+	}
+	
+
 }
