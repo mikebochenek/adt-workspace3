@@ -80,19 +80,30 @@ public class Line {
 		ArrayList<Float> list = new ArrayList<Float>();
 		
 		for (int i = 0; i < 10; i++) {
-			list.add(0.1f * i);
-			list.add(0.0f);
-			list.add(0.0f);
+			list.add(0.1f * (5-i)); // x
+			list.add(0.5f); // y 
+			list.add(0.0f); // z
+			list.add(0.1f * (5-i)); // x
+			list.add(-0.5f); // y
+			list.add(0.0f); // z
 		}
-/*
+
+		// below for loop, is identical, we cut and paste, and switch x-y lines
+		for (int i = 0; i < 10; i++) {
+			list.add(0.5f); // x 
+			list.add(0.1f * (5-i)); // y
+			list.add(0.0f); // z
+			list.add(-0.5f); // x
+			list.add(0.1f * (5-i)); // y
+			list.add(0.0f); // z
+		}
+
+		// com'n there should be an easier way to convert my list to a float array
 		float x[] = new float[list.size()];
 		int idx = 0;
 		for (Float f : list) {
 			x[idx++] = f;
 		}
-*/
-		float x[] = { 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
-			0.0f, 0.1f, 0.0f, 0.5f, 0.1f, 0.0f };
 		return x;
 	}
 	
