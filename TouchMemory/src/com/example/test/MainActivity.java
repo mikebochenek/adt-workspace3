@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -73,6 +74,18 @@ public class MainActivity extends Activity {
                 		    	
                 		    	if (selectionCount == 2) {
                 		    		Log.i(TAG, "we should probably auto-hide after a delay");
+
+                		    		//http://stackoverflow.com/questions/15874117/how-to-set-delay-in-android
+                		    		final Handler handler = new Handler();
+                		    		handler.postDelayed(new Runnable() {
+                		    		    @Override
+                		    		    public void run() {
+                        		    		Log.i(TAG, "oK now we hide");
+
+                		    		        // Do something after 5s = 5000ms
+                		    		        // buttons[inew][jnew].setBackgroundColor(Color.BLACK);
+                		    		    }
+                		    		}, 5000);
                 		    		
                 		    	}
             		    	}
